@@ -25,12 +25,30 @@ const routes = [
   },
   {
     path: "/",
-    name: "login",
+    name: "LandingPage",
     meta: {
       layout: LoginLayout,
     },
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Login.vue"),
+      import(/* webpackChunkName: "about" */ "../views/LandingPage.vue"),
+  },
+
+  {
+    path: "/login",
+    name: "Login",
+    meta: {
+      layout: LoginLayout,
+    },
+    component: () => import("../views/Login.vue"),
+  },
+
+  {
+    path: "/register",
+    name: "Register",
+    meta: {
+      layout: LoginLayout,
+    },
+    component: () => import("../views/Register.vue"),
   },
 ];
 
