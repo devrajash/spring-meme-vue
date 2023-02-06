@@ -6,7 +6,7 @@
 <script>
 export default {
   created() {
-    const token = localStorage.getItem("spring:access_token");
+    const token = sessionStorage.getItem("spring:access_token");
     if (token) {
       this.$router.push("/meme-home");
     } else {

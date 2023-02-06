@@ -31,7 +31,7 @@ Vue.use(
 
 Vue.axios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("spring:access_token");
+    const token = sessionStorage.getItem("spring:access_token");
     if (token != null) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

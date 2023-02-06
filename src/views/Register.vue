@@ -99,8 +99,8 @@ export default {
       });
 
       if (userRes.token) {
-        localStorage.setItem("spring:access_token", userRes.token);
-        localStorage.setItem(
+        sessionStorage.setItem("spring:access_token", userRes.token);
+        sessionStorage.setItem(
           "spring:user_details",
           JSON.stringify(userRes.userDetails)
         );

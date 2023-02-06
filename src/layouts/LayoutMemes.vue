@@ -1,12 +1,25 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar app>
+    <v-app-bar dark color="blue" app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Meme World</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn class="float-right" icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
+
+      <v-menu transition="slide-y-transition">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn dark class="float-right" v-bind="attrs" v-on="on" icon>
+            <v-icon color="blue-light">mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="logout()" link>
+            <v-list-item-title>
+              <v-icon color="blue-light">mdi-logout</v-icon>
+              Logout</v-list-item-title
+            >
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -53,10 +66,16 @@ export default {
     };
   },
   created() {
-    const token = localStorage.getItem("spring:access_token");
+    const token = sessionStorage.getItem("spring:access_token");
     if (!token) {
       this.$router.push("/login");
     }
+  },
+  methods: {
+    logout() {
+      sessionStorage.clear();
+      this.$router.push("/");
+    },
   },
 };
 </script>
