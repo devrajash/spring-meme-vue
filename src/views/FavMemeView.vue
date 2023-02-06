@@ -20,10 +20,12 @@ export default {
   },
 
   async mounted() {
-    this.loaderM = true;
-    if (this.memeListM == 0)
-      await this.$store.dispatch("Memes/getMyFavMemeList");
-    this.loaderM = false;
+    try {
+      this.loaderM = true;
+      if (this.memeListM == 0)
+        await this.$store.dispatch("Memes/getMyFavMemeList");
+      this.loaderM = false;
+    } catch {}
   },
 };
 </script>

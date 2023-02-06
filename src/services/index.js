@@ -9,3 +9,9 @@ export const removeMemeFromMyList = async (id) =>
 
 export const addMemeTOMyList = async (data) =>
   await vue.axios.post("/set-my-fav-meme", data);
+
+export const loginUser = async (data) =>
+  await vue.axios.post("/auth/login", data);
+
+export const registerUser = async (data) =>
+  await vue.axios.post("/auth/register", data);

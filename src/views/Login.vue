@@ -82,7 +82,22 @@ export default {
   },
   methods: {
     async clickSubmit() {
-      //   console.log(x);
+      let userRes = await this.$store.dispatch("Memes/loginUserByCredential", {
+        username: this.email,
+        password: this.password,
+      });
+
+      if (userRes.token) {
+        localStorage.setItem("spring:access_token", userRes.token);
+        localStorage.setItem(
+          "spring:user_details",
+          JSON.stringify(userRes.userDetails)
+        );
+        this.$toasted.success("Welcome to Meme World");
+        this.$router.push("/meme-home");
+      } else {
+        this.$toasted.error("Login Failed!! Try Again");
+      }
     },
   },
 

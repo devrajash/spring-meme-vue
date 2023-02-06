@@ -3,6 +3,8 @@ import {
   myFavMemes,
   removeMemeFromMyList,
   addMemeTOMyList,
+  loginUser,
+  registerUser,
 } from "@/services";
 
 export default {
@@ -11,6 +13,7 @@ export default {
     memeList: [],
     myFavMemesList: [],
     myFavMemesIdsList: [],
+    userLoginDetails: {},
   }),
   actions: {
     async getMemesList(store) {
@@ -33,6 +36,16 @@ export default {
       await removeMemeFromMyList(data);
       await store.commit("setremoveMemeTOMyFavList", data);
       await store.commit("likeDislikeActivatorMutation");
+    },
+
+    async loginUserByCredential(store, data) {
+      let user = await loginUser(data);
+      return user.data;
+    },
+
+    async registerNewUser(store, data) {
+      let user = await registerUser(data);
+      return user.data;
     },
   },
 

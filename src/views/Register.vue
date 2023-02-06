@@ -75,7 +75,6 @@ export default {
       password1: "",
       email: "",
       fName: "",
-
       lName: "",
     };
   },
@@ -88,7 +87,28 @@ export default {
   },
   methods: {
     async clickSubmit() {
-      //   console.log(x);
+      if (this.password != this.password1) {
+        this.$toasted.error("Confirm passoword dosent match!!");
+        return;
+      }
+      let userRes = await this.$store.dispatch("Memes/registerNewUser", {
+        username: this.email,
+        password: this.password,
+        firstname: this.fName,
+        lastname: this.lName,
+      });
+
+      if (userRes.token) {
+        localStorage.setItem("spring:access_token", userRes.token);
+        localStorage.setItem(
+          "spring:user_details",
+          JSON.stringify(userRes.userDetails)
+        );
+        this.$toasted.success("Welcome to Meme World");
+        this.$router.push("/meme-home");
+      } else {
+        this.$toasted.error("Register Failed!! Username already exist");
+      }
     },
   },
 

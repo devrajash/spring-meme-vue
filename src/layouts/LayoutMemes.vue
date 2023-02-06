@@ -3,9 +3,19 @@
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Meme World</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn class="float-right" icon>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer width="200" v-model="drawer" absolute temporaty>
+    <v-navigation-drawer
+      width="200"
+      style="position: fixed"
+      v-model="drawer"
+      absolute
+      temporaty
+    >
       <v-list class="marging-meme-drawer">
         <v-list-item
           @click="
@@ -41,6 +51,12 @@ export default {
         { title: "My Favorite", icon: "mdi-heart", path: "/fav-meme" },
       ],
     };
+  },
+  created() {
+    const token = localStorage.getItem("spring:access_token");
+    if (!token) {
+      this.$router.push("/login");
+    }
   },
 };
 </script>

@@ -7,6 +7,7 @@ import router from "./router";
 import store from "./store";
 import axios from "axios";
 import VueAxios from "vue-axios";
+import Toasted from "vue-toasted";
 
 Vue.config.productionTip = false;
 
@@ -15,16 +16,26 @@ Vue.config.productionTip = false;
 
 // Vue.use(BootstrapVue);
 // Vue.use(IconsPlugin);
+
+Vue.use(Toasted, {
+  position: "top-center",
+  duration: 5000,
+});
 Vue.use(
   VueAxios,
   axios.create({
-    baseURL: process.env.VUE_APP_BASE_URL,
-    // baseURL: "http://172.21.106.51:4200/",
+    // baseURL: "https://spring-meme-deploy2.onrender.com/",
+    baseURL: "http://192.168.43.119:8080/",
   })
 );
 
 Vue.axios.interceptors.request.use(
   (config) => {
+    const token = localStorage.getItem("spring:access_token");
+    if (token != null) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    config.headers["Content-Type"] = "application/json";
     return config;
   },
   (error) => {
