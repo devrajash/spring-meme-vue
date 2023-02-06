@@ -8,6 +8,9 @@ import store from "./store";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import Toasted from "vue-toasted";
+import { initializeApp } from "firebase/app";
+
+import firebaseConfig from "./firebaseKey";
 
 Vue.config.productionTip = false;
 
@@ -42,6 +45,8 @@ Vue.axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+initializeApp(firebaseConfig);
 
 new Vue({
   router,

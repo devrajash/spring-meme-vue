@@ -44,7 +44,13 @@
       <!-- <v-btn class="mb-n2 mr-2" dark color="blue" @click="clickSubmit">
         <v-icon color="red">mdi-google</v-icon> Google Login
       </v-btn> -->'
-      <button type="button" class="login-with-google-btn mr-2">Login</button>
+      <button
+        @click="gLogin()"
+        type="button"
+        class="login-with-google-btn mr-2"
+      >
+        Login
+      </button>
       <v-btn
         style="margin-top: -8px; height: 42px; color: blanchedalmond"
         class="mb-n2"
@@ -64,6 +70,7 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 export default {
   setup: () => ({ v$: useVuelidate() }),
@@ -81,6 +88,25 @@ export default {
     },
   },
   methods: {
+    async gLogin() {
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          const user = result.user;
+
+          console.log(credential);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          const email = error.customData.email;
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          console.log(credential);
+        });
+    },
     async clickSubmit() {
       let userRes = await this.$store.dispatch("Memes/loginUserByCredential", {
         username: this.email,
