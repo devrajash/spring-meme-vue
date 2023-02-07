@@ -28,7 +28,7 @@ Vue.use(
   VueAxios,
   axios.create({
     // baseURL: "https://spring-meme-deploy2.onrender.com/",
-    baseURL: "http://192.168.43.119:8080/",
+    baseURL: process.env.VUE_APP_BASE_URL,
   })
 );
 

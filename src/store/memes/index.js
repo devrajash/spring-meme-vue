@@ -5,6 +5,7 @@ import {
   addMemeTOMyList,
   loginUser,
   registerUser,
+  googleLoginVerify,
 } from "@/services";
 
 export default {
@@ -45,6 +46,10 @@ export default {
 
     async registerNewUser(store, data) {
       let user = await registerUser(data);
+      return user.data;
+    },
+    async googleLoginVerifyApi(store, data) {
+      let user = await googleLoginVerify(data);
       return user.data;
     },
   },

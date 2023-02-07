@@ -44,22 +44,31 @@
       <!-- <v-btn class="mb-n2 mr-2" dark color="blue" @click="clickSubmit">
         <v-icon color="red">mdi-google</v-icon> Google Login
       </v-btn> -->'
-      <button
-        @click="gLogin()"
-        type="button"
-        class="login-with-google-btn mr-2"
-      >
-        Login
-      </button>
-      <v-btn
-        style="margin-top: -8px; height: 42px; color: blanchedalmond"
-        class="mb-n2"
-        color="blue"
-        :disabled="dataValCheck"
-        @click="clickSubmit"
-      >
-        submit
-      </v-btn>
+
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
+
+      <template v-if="!loading">
+        <button
+          @click="gLogin()"
+          type="button"
+          class="login-with-google-btn mr-2"
+        >
+          Login
+        </button>
+        <v-btn
+          style="margin-top: -8px; height: 42px; color: blanchedalmond"
+          class="mb-n2"
+          color="blue"
+          :disabled="dataValCheck"
+          @click="clickSubmit"
+        >
+          submit
+        </v-btn>
+      </template>
     </form>
     <span class="mb-2"
       >Dont have account??
@@ -78,6 +87,7 @@ export default {
     return {
       password: "",
       email: "",
+      loading: false,
     };
   },
 
@@ -89,25 +99,46 @@ export default {
   },
   methods: {
     async gLogin() {
+      this.loading = true;
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
       signInWithPopup(auth, provider)
-        .then((result) => {
+        .then(async (result) => {
           const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          const user = result.user;
 
-          console.log(credential);
+          const token = credential.accessToken;
+
+          let userRes = await this.$store.dispatch(
+            "Memes/googleLoginVerifyApi",
+            {
+              access_token: token,
+            }
+          );
+
+          if (userRes.token) {
+            sessionStorage.setItem("spring:access_token", userRes.token);
+            sessionStorage.setItem(
+              "spring:user_details",
+              JSON.stringify(userRes.userDetails)
+            );
+            this.$toasted.success("Welcome to Meme World");
+            this.$router.push("/meme-home");
+          } else {
+            this.$toasted.error("Login Failed!! Try Again");
+          }
+
+          this.loading = false;
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           const email = error.customData.email;
           const credential = GoogleAuthProvider.credentialFromError(error);
-          console.log(credential);
+          this.$toasted.error("Login Failed!! Try Again");
         });
     },
     async clickSubmit() {
+      this.loading = true;
       let userRes = await this.$store.dispatch("Memes/loginUserByCredential", {
         username: this.email,
         password: this.password,
@@ -124,6 +155,7 @@ export default {
       } else {
         this.$toasted.error("Login Failed!! Try Again");
       }
+      this.loading = false;
     },
   },
 

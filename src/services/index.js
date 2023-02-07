@@ -15,3 +15,6 @@ export const loginUser = async (data) =>
 
 export const registerUser = async (data) =>
   await vue.axios.post("/auth/register", data);
+
+export const googleLoginVerify = async (data) =>
+  await vue.axios.post("/auth/google", data);
