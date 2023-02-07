@@ -11,6 +11,7 @@ import Toasted from "vue-toasted";
 import { initializeApp } from "firebase/app";
 
 import firebaseConfig from "./firebaseKey";
+import './registerServiceWorker'
 
 Vue.config.productionTip = false;
 

@@ -13,6 +13,7 @@
     "axios": "^1.2.3",
     "core-js": "^3.8.3",
     "firebase": "^9.17.1",
+    "register-service-worker": "^1.7.2",
     "vue": "^2.6.14",
     "vue-axios": "^3.5.2",
     "vue-router": "^3.5.1",
@@ -22,17 +23,18 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-pwa": "^5.0.8",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "vue-template-compiler": "^2.6.14"
   },
-  "overrides": {
-    "autoprefixer": "10.4.5"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "overrides": {
+    "autoprefixer": "10.4.5"
+  }
 }
