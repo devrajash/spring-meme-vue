@@ -130,6 +130,7 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
+          this.loading = false;
           const errorCode = error.code;
           const errorMessage = error.message;
           const email = error.customData.email;

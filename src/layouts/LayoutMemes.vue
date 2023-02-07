@@ -8,17 +8,46 @@
       <v-menu transition="slide-y-transition">
         <template v-slot:activator="{ on, attrs }">
           <v-btn dark class="float-right" v-bind="attrs" v-on="on" icon>
-            <v-icon color="blue-light">mdi-account-circle</v-icon>
+            <img
+              id="rounded-mini"
+              :src="userDetails.image || 'img/img_avatar.png'"
+              alt=""
+              srcset=""
+            />
+
+            <!-- <v-icon color="blue-light">mdi-account-circle</v-icon> -->
           </v-btn>
         </template>
-        <v-list>
+
+        <v-card link height="200" width="150" class="mx-auto">
+          <img
+            id="rounded-card"
+            :src="userDetails.image || 'img/img_avatar.png'"
+            alt=""
+            srcset=""
+          />
+          <v-card-text id="account-style">{{
+            userDetails.name.length > 12
+              ? userDetails.name.slice(0, 12) + ".."
+              : userDetails.name
+          }}</v-card-text>
+
+          <v-card-actions style="margin-top: -12px; margin-left: 12px">
+            <v-btn color="deep-purple lighten-2" text @click="logout()">
+              <v-icon color="blue-light">mdi-logout</v-icon>
+              Logout
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+
+        <!-- <v-list>
           <v-list-item @click="logout()" link>
             <v-list-item-title>
               <v-icon color="blue-light">mdi-logout</v-icon>
               Logout</v-list-item-title
             >
           </v-list-item>
-        </v-list>
+        </v-list> -->
       </v-menu>
     </v-app-bar>
 
@@ -59,6 +88,10 @@ export default {
   data() {
     return {
       drawer: false,
+      expand: false,
+      userDetails: {
+        name: "",
+      },
       items: [
         { title: "Meme Store", icon: "mdi-home", path: "/meme-home" },
         { title: "My Favorite", icon: "mdi-heart", path: "/fav-meme" },
@@ -70,6 +103,15 @@ export default {
     if (!token) {
       this.$router.push("/login");
     }
+  },
+  mounted() {
+    const userDetails = JSON.parse(
+      sessionStorage.getItem("spring:user_details")
+    );
+    this.userDetails = userDetails;
+    this.userDetails[
+      "name"
+    ] = `${userDetails.firstname} ${userDetails.lastname}`;
   },
   methods: {
     logout() {
@@ -85,5 +127,27 @@ export default {
 }
 .marging-meme-drawer {
   margin-top: 67px;
+}
+#rounded-card {
+  height: 89px;
+  width: 89px;
+  border-radius: 50%;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+#rounded-mini {
+  height: 37px;
+  width: 37px;
+  border-radius: 50%;
+  /* padding: 4px; */
+  border: 4px solid #fff;
+}
+#account-style {
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: -10px;
+  color: dodgerblue;
+  padding: 11px;
 }
 </style>
